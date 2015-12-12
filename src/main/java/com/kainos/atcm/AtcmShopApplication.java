@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.UUID;
+
 @Configuration
 @ComponentScan
 @EnableAutoConfiguration
@@ -29,19 +31,37 @@ public class AtcmShopApplication extends SpringBootServletInitializer {
 
 
 @RestController
-class ReadController {
+class CustomerReadController {
 
-    @RequestMapping("/read/{cart}")
-    String hello(@PathVariable String name) {
-        return "Hello, " + name + "!";
+    @RequestMapping("/read/{customerid}")
+    String cart(@PathVariable UUID customerId) {
+        return "Hello, " + customerId + "!";
     }
 }
 
 @RestController
-class WriteController {
+class CustomerCartReadController {
+
+    @RequestMapping("/read/{cart}")
+    String cart(@PathVariable UUID cartId) {
+        return "Hello, " + cartId + "!";
+    }
+}
+
+@RestController
+class CustomerCartWriteController {
 
     @RequestMapping("/write/{cart}")
-    String hello(@PathVariable String name) {
-        return "Hello, " + name + "!";
+    String add(@PathVariable UUID cartId) {
+        return "Hello, " + cartId + "!";
+    }
+}
+
+@RestController
+class ProductReadController {
+
+    @RequestMapping("/read/products/")
+    String product() {
+        return "product!";
     }
 }
