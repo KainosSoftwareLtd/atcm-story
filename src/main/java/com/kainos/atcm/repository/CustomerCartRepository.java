@@ -20,7 +20,7 @@ public class CustomerCartRepository {
         CustomerCart testCart = new CustomerCart();
         testCart.setCustomerCartId(UUID.fromString("e78bb203-26c4-40f5-856a-c65e4598a1cd"));
         testCart.setUpdatedAt(DateTime.now());
-        dataStore.put(testCart.getCustomerCartId(),testCart);
+        dataStore.put(testCart.getCustomerCartId(), testCart);
     }
 
     public Optional<CustomerCart> getCustomerCart(UUID customerCardId) {

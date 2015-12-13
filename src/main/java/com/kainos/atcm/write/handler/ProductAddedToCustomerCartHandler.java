@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ProductAddedToCustomerCartHandler {
-    public void handle(ProductAddedToCustomerCart productAddedToCustomerCart){
+    public void handle(ProductAddedToCustomerCart productAddedToCustomerCart) {
         return;
     }
 }

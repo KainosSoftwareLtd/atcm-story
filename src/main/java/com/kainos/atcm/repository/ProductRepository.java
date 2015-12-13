@@ -22,7 +22,7 @@ public class ProductRepository {
             product.setCost((float) i);
             product.setName("Product " + i);
             product.setDescription("Description " + i);
-            dataStore.put(product.getId(),product);
+            dataStore.put(product.getId(), product);
         }
     }
 
