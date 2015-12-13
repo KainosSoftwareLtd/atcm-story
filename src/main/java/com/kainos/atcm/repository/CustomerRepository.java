@@ -1,17 +1,24 @@
 package com.kainos.atcm.repository;
 
 import com.kainos.atcm.read.customer.Customer;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.UUID;
 
-/**
- * Created by Rory80hz on 12/12/2015.
- */
+@Component
 public class CustomerRepository {
-    private HashMap<UUID, Customer> dataStore;
+    private HashMap<UUID, Customer> dataStore = new HashMap<>();
 
-    public Customer getCustomer(UUID customerId) {
-        return dataStore.get(customerId);
+    public CustomerRepository() {
+        Customer customer = new Customer();
+        customer.setCustomerId(UUID.randomUUID());
+        customer.setName("Test Person");
+        dataStore.put(customer.getCustomerId(), customer);
+    }
+
+    public Optional<Customer> getCustomer(UUID customerId) {
+        return dataStore.values().stream().findFirst();
     }
 }

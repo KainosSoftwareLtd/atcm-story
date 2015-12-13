@@ -1,21 +1,31 @@
 package com.kainos.atcm.repository;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
 import com.kainos.atcm.read.cart.CustomerCart;
-import jersey.repackaged.com.google.common.collect.ListMultimap;
+import org.joda.time.DateTime;
+import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
-/**
- * Created by Rory80hz on 12/12/2015.
- */
+@Component
 public class CustomerCartRepository {
-    private ListMultimap<UUID,CustomerCart> dataStore;
+    private ListMultimap<UUID, CustomerCart> dataStore;
 
-    public CustomerCart getCustomerCart(UUID customerCardId){
+    public CustomerCartRepository() {
+        dataStore = ArrayListMultimap.create();
+        CustomerCart testCart = new CustomerCart();
+        testCart.setCustomerCartId(UUID.fromString("e78bb203-26c4-40f5-856a-c65e4598a1cd"));
+        testCart.setUpdatedAt(DateTime.now());
+        dataStore.put(testCart.getCustomerCartId(),testCart);
+    }
+
+    public Optional<CustomerCart> getCustomerCart(UUID customerCardId) {
         List<CustomerCart> cartHistory = dataStore.get(customerCardId);
-        Collections.sort(cartHistory, (cart1,cart2)-> cart1.getUpdatedAt().compareTo(cart2.getUpdatedAt()));
-        return cartHistory.get(0);
+        Collections.sort(cartHistory, (cart1, cart2) -> cart1.getUpdatedAt().compareTo(cart2.getUpdatedAt()));
+        return cartHistory.stream().findFirst();
     }
 }

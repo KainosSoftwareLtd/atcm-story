@@ -1,13 +1,13 @@
 package com.kainos.atcm.repository;
 
+import org.springframework.stereotype.Component;
+
 import java.util.HashMap;
 import java.util.UUID;
 
-/**
- * Created by Rory80hz on 12/12/2015.
- */
+@Component
 public class EventStoreRepository {
-    private HashMap<UUID, String> datastore;
+    private HashMap<UUID, String> datastore = new HashMap<>();
 
     public void storeEvent(UUID correlationId, String json) {
         if (datastore.containsKey(correlationId)) {

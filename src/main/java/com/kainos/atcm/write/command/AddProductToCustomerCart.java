@@ -1,7 +1,12 @@
 package com.kainos.atcm.write.command;
 
-/**
- * Created by Rory80hz on 12/12/2015.
- */
+import org.joda.time.DateTime;
+
+import java.util.UUID;
+
+
 public class AddProductToCustomerCart {
+    UUID productId;
+    UUID correlationId;
+    DateTime updateDateTime;
 }

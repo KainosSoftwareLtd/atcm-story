@@ -1,7 +1,11 @@
 package com.kainos.atcm.write.handler;
 
-/**
- * Created by Rory80hz on 12/12/2015.
- */
+import com.kainos.atcm.write.event.ProductAddedToCustomerCart;
+import org.springframework.stereotype.Component;
+
+@Component
 public class ProductAddedToCustomerCartHandler {
+    public void handle(ProductAddedToCustomerCart productAddedToCustomerCart){
+        return;
+    }
 }

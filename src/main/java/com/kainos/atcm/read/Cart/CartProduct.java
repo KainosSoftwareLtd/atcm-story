@@ -2,9 +2,6 @@ package com.kainos.atcm.read.cart;
 
 import java.util.UUID;
 
-/**
- * Created by Rory80hz on 12/12/2015.
- */
 public class CartProduct {
     private UUID id;
     private String name;

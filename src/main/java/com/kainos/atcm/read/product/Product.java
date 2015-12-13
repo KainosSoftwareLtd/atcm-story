@@ -3,9 +3,6 @@ package com.kainos.atcm.read.product;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Created by Rory80hz on 12/12/2015.
- */
 public class Product {
     private UUID id;
     private String name;

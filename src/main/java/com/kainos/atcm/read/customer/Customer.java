@@ -7,6 +7,7 @@ import java.util.UUID;
 /**
  * Created by Rory80hz on 12/12/2015.
  */
+
 public class Customer {
     private UUID customerId;
     private Currency customerCurrency;

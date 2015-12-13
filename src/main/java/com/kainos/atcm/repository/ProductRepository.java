@@ -1,6 +1,7 @@
 package com.kainos.atcm.repository;
 
 import com.kainos.atcm.read.product.Product;
+import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -8,11 +9,22 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-/**
- * Created by Rory80hz on 12/12/2015.
- */
+@Component
 public class ProductRepository {
-    private HashMap<UUID, Product> dataStore;
+    private HashMap<UUID, Product> dataStore = new HashMap<>();
+
+    public ProductRepository() {
+
+        for (int i = 0; i < 10; i++) {
+            Product product = new Product();
+            product.setId(UUID.randomUUID());
+            product.setCategory("Category " + i);
+            product.setCost((float) i);
+            product.setName("Product " + i);
+            product.setDescription("Description " + i);
+            dataStore.put(product.getId(),product);
+        }
+    }
 
     public Collection<Product> getProducts() {
         return dataStore.values();
