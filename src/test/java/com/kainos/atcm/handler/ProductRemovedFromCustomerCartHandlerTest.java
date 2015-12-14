@@ -8,16 +8,12 @@ import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.Optional;
 import java.util.UUID;
 
-/**
- * Created by Rory80hz on 14/12/2015.
- */
 public class ProductRemovedFromCustomerCartHandlerTest {
 
     private void addProductToCart(UUID cartId, UUID productId, CustomerCartRepository customerCartRepository) {
-        UUID corellationId = UUID.randomUUID();
+        UUID correlationId = UUID.randomUUID();
         DateTime dateUpdated = DateTime.now();
 
         ProductAddedToCustomerCartHandler productAddedToCustomerCartHandler = new ProductAddedToCustomerCartHandler(customerCartRepository);
@@ -25,7 +21,7 @@ public class ProductRemovedFromCustomerCartHandlerTest {
         ProductAddedToCustomerCart productAddedToCustomerCart = new ProductAddedToCustomerCart();
         productAddedToCustomerCart.setCartId(cartId);
         productAddedToCustomerCart.setProductId(productId);
-        productAddedToCustomerCart.setCorrelationId(corellationId);
+        productAddedToCustomerCart.setCorrelationId(correlationId);
         productAddedToCustomerCart.setUpdateDateTime(dateUpdated);
 
         productAddedToCustomerCartHandler.handle(productAddedToCustomerCart);
@@ -53,16 +49,72 @@ public class ProductRemovedFromCustomerCartHandlerTest {
 
         // Act
         productRemovedFromCustomerCartHandler.handle(productRemovedFromCustomerCart);
-
-
-        // Assert
-        Optional<CustomerCart> optionalCustomerCart = customerCartRepository.getLatestCustomerCart(cartId);
+        CustomerCart customerCart = customerCartRepository.getCustomerCart(cartId);
 
         // Assert
-        Assert.assertTrue(optionalCustomerCart.isPresent());
-
-
-        CustomerCart customerCart = optionalCustomerCart.get();
         Assert.assertTrue("Cart Contains One Product", customerCart.getProducts().size() == 0);
+    }
+
+    @Test
+    public void RemoveOneProductWhenTwoExist() throws Exception {
+        // Arrange
+        CustomerCartRepository customerCartRepository = new CustomerCartRepository();
+        UUID cartId = UUID.randomUUID();
+        UUID productId = UUID.randomUUID();
+        UUID product2Id = UUID.randomUUID();
+        UUID correlationId = UUID.randomUUID();
+        DateTime dateUpdated = DateTime.now();
+
+        addProductToCart(cartId, productId, customerCartRepository);
+        addProductToCart(cartId, product2Id, customerCartRepository);
+
+        ProductRemovedFromCustomerCartHandler productRemovedFromCustomerCartHandler = new ProductRemovedFromCustomerCartHandler(customerCartRepository);
+
+        ProductRemovedFromCustomerCart productRemovedFromCustomerCart = new ProductRemovedFromCustomerCart();
+        productRemovedFromCustomerCart.setCartId(cartId);
+        productRemovedFromCustomerCart.setProductId(productId);
+        productRemovedFromCustomerCart.setCorrelationId(correlationId);
+        productRemovedFromCustomerCart.setUpdateDateTime(dateUpdated);
+
+
+        // Act
+        productRemovedFromCustomerCartHandler.handle(productRemovedFromCustomerCart);
+        CustomerCart customerCart = customerCartRepository.getCustomerCart(cartId);
+
+        // Assert
+        Assert.assertTrue("Cart Contains One Product", customerCart.getProducts().size() == 1);
+        Assert.assertTrue("Cart Contains Correct Product", customerCart.getProducts().get(0).getProductId() == product2Id);
+        Assert.assertTrue("Cart Contains Correct Product Count", customerCart.getProducts().get(0).getQuantity().equals(1));
+    }
+
+    @Test
+    public void RemoveOneProductWhenTwoOfTheSameExist() throws Exception {
+        // Arrange
+        CustomerCartRepository customerCartRepository = new CustomerCartRepository();
+        UUID cartId = UUID.randomUUID();
+        UUID productId = UUID.randomUUID();
+        UUID correlationId = UUID.randomUUID();
+        DateTime dateUpdated = DateTime.now();
+
+        addProductToCart(cartId, productId, customerCartRepository);
+        addProductToCart(cartId, productId, customerCartRepository);
+
+        ProductRemovedFromCustomerCartHandler productRemovedFromCustomerCartHandler = new ProductRemovedFromCustomerCartHandler(customerCartRepository);
+
+        ProductRemovedFromCustomerCart productRemovedFromCustomerCart = new ProductRemovedFromCustomerCart();
+        productRemovedFromCustomerCart.setCartId(cartId);
+        productRemovedFromCustomerCart.setProductId(productId);
+        productRemovedFromCustomerCart.setCorrelationId(correlationId);
+        productRemovedFromCustomerCart.setUpdateDateTime(dateUpdated);
+
+
+        // Act
+        productRemovedFromCustomerCartHandler.handle(productRemovedFromCustomerCart);
+        CustomerCart customerCart = customerCartRepository.getCustomerCart(cartId);
+
+        // Assert
+        Assert.assertTrue("Cart Contains One Product", customerCart.getProducts().size() == 1);
+        Assert.assertTrue("Cart Contains Correct Product", customerCart.getProducts().get(0).getProductId() == productId);
+        Assert.assertTrue("Cart Contains Correct Product Count", customerCart.getProducts().get(0).getQuantity().equals(1));
     }
 }

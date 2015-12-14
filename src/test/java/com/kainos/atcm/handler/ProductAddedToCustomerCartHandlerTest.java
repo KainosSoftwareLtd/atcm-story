@@ -9,7 +9,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -32,16 +31,11 @@ public class ProductAddedToCustomerCartHandlerTest {
         productAddedToCustomerCart.setCorrelationId(corellationId);
         productAddedToCustomerCart.setUpdateDateTime(dateUpdated);
 
-
         // Act
         productAddedToCustomerCartHandler.handle(productAddedToCustomerCart);
-        Optional<CustomerCart> optionalCustomerCart = customerCartRepository.getLatestCustomerCart(cartId);
+        CustomerCart customerCart = customerCartRepository.getCustomerCart(cartId);
 
         // Assert
-        Assert.assertTrue(optionalCustomerCart.isPresent());
-
-
-        CustomerCart customerCart = optionalCustomerCart.get();
         Assert.assertTrue("Cart Contains One Product", customerCart.getProducts().size() == 1);
         Assert.assertTrue("Cart Contains Correct Product", customerCart.getProducts().get(0).getProductId() == productId);
         Assert.assertTrue("Cart Contains Correct Product Count", customerCart.getProducts().get(0).getQuantity().equals(1));
@@ -61,13 +55,11 @@ public class ProductAddedToCustomerCartHandlerTest {
         productAddedToCustomerCart.setCartId(cartId);
         productAddedToCustomerCart.setProductId(productId);
 
-
         // Act
         // First Addition
         productAddedToCustomerCart.setCorrelationId(UUID.randomUUID());
         productAddedToCustomerCart.setUpdateDateTime(DateTime.now());
         productAddedToCustomerCartHandler.handle(productAddedToCustomerCart);
-
 
         // Second Addition
         productAddedToCustomerCart.setProductId(product2Id);
@@ -75,13 +67,9 @@ public class ProductAddedToCustomerCartHandlerTest {
         productAddedToCustomerCart.setUpdateDateTime(DateTime.now());
         productAddedToCustomerCartHandler.handle(productAddedToCustomerCart);
 
-        Optional<CustomerCart> optionalCustomerCart = customerCartRepository.getLatestCustomerCart(cartId);
+        CustomerCart customerCart = customerCartRepository.getCustomerCart(cartId);
 
         // Assert
-        Assert.assertTrue(optionalCustomerCart.isPresent());
-
-
-        CustomerCart customerCart = optionalCustomerCart.get();
         Assert.assertTrue("Cart Contains One Product", customerCart.getProducts().size() == 2);
         Assert.assertTrue("Cart Contains Correct Product", customerCart.getProducts().get(0).getProductId() == productId);
         Assert.assertTrue("Cart Contains Correct Product Count", customerCart.getProducts().get(0).getQuantity().equals(1));
@@ -103,26 +91,20 @@ public class ProductAddedToCustomerCartHandlerTest {
         productAddedToCustomerCart.setCartId(cartId);
         productAddedToCustomerCart.setProductId(productId);
 
-
         // Act
         // First Addition
         productAddedToCustomerCart.setCorrelationId(UUID.randomUUID());
         productAddedToCustomerCart.setUpdateDateTime(DateTime.now());
         productAddedToCustomerCartHandler.handle(productAddedToCustomerCart);
 
-
         // Second Addition
         productAddedToCustomerCart.setCorrelationId(UUID.randomUUID());
         productAddedToCustomerCart.setUpdateDateTime(DateTime.now());
         productAddedToCustomerCartHandler.handle(productAddedToCustomerCart);
 
-        Optional<CustomerCart> optionalCustomerCart = customerCartRepository.getLatestCustomerCart(cartId);
+        CustomerCart customerCart = customerCartRepository.getCustomerCart(cartId);
 
         // Assert
-        Assert.assertTrue(optionalCustomerCart.isPresent());
-
-
-        CustomerCart customerCart = optionalCustomerCart.get();
         Assert.assertTrue("Cart Contains One Product", customerCart.getProducts().size() == 1);
         Assert.assertTrue("Cart Contains Correct Product", customerCart.getProducts().get(0).getProductId() == productId);
         Assert.assertTrue("Cart Contains Correct Product Count", customerCart.getProducts().get(0).getQuantity().equals(2));
@@ -145,16 +127,11 @@ public class ProductAddedToCustomerCartHandlerTest {
         productAddedToCustomerCart.setCorrelationId(corellationId);
         productAddedToCustomerCart.setUpdateDateTime(dateUpdated);
 
-
         // Act
         productAddedToCustomerCartHandler.handle(productAddedToCustomerCart);
-        Optional<CustomerCart> optionalCustomerCart = customerCartRepository.getLatestCustomerCart(cartId);
+        CustomerCart customerCart = customerCartRepository.getCustomerCart(cartId);
 
         // Assert
-        Assert.assertTrue(optionalCustomerCart.isPresent());
-
-
-        CustomerCart customerCart = optionalCustomerCart.get();
         Assert.assertTrue("Cart Contains One Product", customerCart.getProducts().size() == 1);
         Assert.assertTrue("Cart Contains Correct Product", customerCart.getProducts().get(0).getProductId() == productId);
         Assert.assertTrue("Cart Contains Correct Product Count", customerCart.getProducts().get(0).getQuantity().equals(1));

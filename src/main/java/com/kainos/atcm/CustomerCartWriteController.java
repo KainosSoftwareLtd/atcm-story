@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.core.Response;
 import javax.xml.ws.http.HTTPException;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -35,8 +34,8 @@ public class CustomerCartWriteController {
 
     @RequestMapping(value = "/{cartId}", method = RequestMethod.POST)
     Response add(@PathVariable UUID cartId, @RequestBody AddProductToCustomerCart addProductToCustomerCart) {
-        Optional<CustomerCart> customerCart = customerCartRepository.getLatestCustomerCart(cartId);
-        if (!customerCart.isPresent()) {
+        CustomerCart customerCart = customerCartRepository.getCustomerCart(cartId);
+        if (customerCart == null) {
             throw new HTTPException(404);
         }
 
@@ -60,8 +59,8 @@ public class CustomerCartWriteController {
 
     @RequestMapping(value = "/{cartId}", method = RequestMethod.DELETE)
     Response remove(@PathVariable UUID cartId, @RequestBody RemoveProductFromCustomerCart removeProductFromCustomerCart) {
-        Optional<CustomerCart> customerCart = customerCartRepository.getLatestCustomerCart(cartId);
-        if (!customerCart.isPresent()) {
+        CustomerCart customerCart = customerCartRepository.getCustomerCart(cartId);
+        if (customerCart == null) {
             throw new HTTPException(404);
         }
 

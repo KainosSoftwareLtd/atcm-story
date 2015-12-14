@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.xml.ws.http.HTTPException;
 import java.util.Collection;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -20,11 +19,11 @@ public class CustomerCartReadController {
 
     @RequestMapping("/{cartId}")
     CustomerCart cart(@PathVariable String cartId) {
-        Optional<CustomerCart> customerCart = customerCartRepository.getLatestCustomerCart(UUID.fromString(cartId));
-        if (!customerCart.isPresent()) {
+        CustomerCart customerCart = customerCartRepository.getCustomerCart(UUID.fromString(cartId));
+        if (customerCart == null) {
             throw new HTTPException(404);
         }
-        return customerCart.get();
+        return customerCart;
     }
 
     @RequestMapping()

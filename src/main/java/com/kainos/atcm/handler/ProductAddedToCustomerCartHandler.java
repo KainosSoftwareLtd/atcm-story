@@ -20,50 +20,32 @@ public class ProductAddedToCustomerCartHandler {
     }
 
     public void handle(ProductAddedToCustomerCart productAddedToCustomerCart) {
-        CustomerCart customerCart;
-        Optional<CustomerCart> cart = customerCartRepository.getLatestCustomerCart(productAddedToCustomerCart.getCartId());
+        CustomerCart customerCart = customerCartRepository.getCustomerCart(productAddedToCustomerCart.getCartId());
 
-        if(cart.isPresent()){
-            customerCart = cart.get();
-        }
-        else{
+        if (customerCart == null) {
             customerCart = new CustomerCart();
             customerCart.setCustomerCartId(productAddedToCustomerCart.getCartId());
         }
 
-        // Sort out the addition of a product
-        // Clone Last good state of the cart to prep for Add
-        CustomerCart newCustomerCart = cloneCart(productAddedToCustomerCart, customerCart);
-
         // Deal with Product Addition
-        CartProduct productToAdd = getCartProduct(productAddedToCustomerCart, newCustomerCart);
+        CartProduct productToAdd = getCartProduct(productAddedToCustomerCart, customerCart);
 
         // Remove existing version (if it exists) and add new version
-        newCustomerCart.getProducts().removeIf(p -> p.getProductId().equals(productAddedToCustomerCart.getProductId()));
-        newCustomerCart.getProducts().add(productToAdd);
+        customerCart.getProducts().removeIf(p -> p.getProductId().equals(productAddedToCustomerCart.getProductId()));
+        customerCart.getProducts().add(productToAdd);
 
         // Store
-        customerCartRepository.storeCustomerCart(newCustomerCart);
-    }
-
-    private CustomerCart cloneCart(ProductAddedToCustomerCart productAddedToCustomerCart, CustomerCart customerCart) {
-        CustomerCart newCustomerCart = new CustomerCart();
-        newCustomerCart.setCorrelationId(productAddedToCustomerCart.getCorrelationId());
-        newCustomerCart.setCustomerCartId(productAddedToCustomerCart.getCartId());
-        newCustomerCart.setUpdatedAt(productAddedToCustomerCart.getUpdateDateTime());
-        newCustomerCart.setProducts(customerCart.getProducts());
-        return newCustomerCart;
+        customerCartRepository.storeCustomerCart(customerCart);
     }
 
     private CartProduct getCartProduct(ProductAddedToCustomerCart productAddedToCustomerCart, CustomerCart customerCart) {
         Optional<CartProduct> cartProduct = customerCart.getProducts().stream().filter(p -> p.getProductId() == productAddedToCustomerCart.getProductId()).findFirst();
         CartProduct productToAdd;
-        if(cartProduct.isPresent()){
+        if (cartProduct.isPresent()) {
             productToAdd = cartProduct.get();
             int newQuantity = productToAdd.getQuantity() + 1;
             productToAdd.setQuantity(newQuantity);
-        }
-        else {
+        } else {
             productToAdd = new CartProduct();
             productToAdd.setProductId(productAddedToCustomerCart.getProductId());
             productToAdd.setQuantity(1);
