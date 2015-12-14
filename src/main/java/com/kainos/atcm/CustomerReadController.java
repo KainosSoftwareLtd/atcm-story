@@ -18,8 +18,8 @@ public class CustomerReadController {
     CustomerRepository customerRepository;
 
     @RequestMapping("/{customerId}")
-    Customer cart(@PathVariable String customerId) {
-        Optional<Customer> thing = customerRepository.getCustomer(UUID.fromString(customerId));
+    Customer cart(@PathVariable UUID customerId) {
+        Optional<Customer> thing = customerRepository.getCustomer(customerId);
         if (!thing.isPresent()) {
             throw new HTTPException(404);
         }

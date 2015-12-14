@@ -18,20 +18,20 @@ public class ProductAddedToCustomerCart {
         this.cartId = cartId;
     }
 
-    public UUID getCorrelationId() {
-        return correlationId;
-    }
-
-    public void setCorrelationId(UUID correlationId) {
-        this.correlationId = correlationId;
-    }
-
     public UUID getProductId() {
         return productId;
     }
 
     public void setProductId(UUID productId) {
         this.productId = productId;
+    }
+
+    public UUID getCorrelationId() {
+        return correlationId;
+    }
+
+    public void setCorrelationId(UUID correlationId) {
+        this.correlationId = correlationId;
     }
 
     public DateTime getUpdateDateTime() {

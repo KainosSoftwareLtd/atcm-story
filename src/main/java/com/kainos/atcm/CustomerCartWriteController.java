@@ -33,30 +33,46 @@ public class CustomerCartWriteController {
     ProductRemovedFromCustomerCartHandler productRemovedFromCustomerCartHandler;
 
     @RequestMapping(value = "/{cartId}", method = RequestMethod.POST)
-    Response add(@PathVariable String cartId, @RequestBody AddProductToCustomerCart addProductToCustomerCart) {
-        Optional<CustomerCart> thing = customerCartRepository.getCustomerCart(UUID.fromString(cartId));
-        if (!thing.isPresent()) {
+    Response add(@PathVariable UUID cartId, @RequestBody AddProductToCustomerCart addProductToCustomerCart) {
+        Optional<CustomerCart> customerCart = customerCartRepository.getCustomerCart(cartId);
+        if (!customerCart.isPresent()) {
             throw new HTTPException(404);
         }
 
-        // Store / Publish Event
+        // Map Command to Event
         ProductAddedToCustomerCart productAddedToCustomerCart = new ProductAddedToCustomerCart();
-        eventStoreRepository.storeEvent(UUID.randomUUID(), productAddedToCustomerCart.toString());
+        productAddedToCustomerCart.setCartId(cartId);
+        productAddedToCustomerCart.setCorrelationId(addProductToCustomerCart.getCorrelationId());
+        productAddedToCustomerCart.setProductId(addProductToCustomerCart.getProductId());
+        productAddedToCustomerCart.setUpdateDateTime(addProductToCustomerCart.getUpdateDateTime());
+
+        // Store Event
+        eventStoreRepository.storeCustomerCartEvent(cartId, productAddedToCustomerCart.getCorrelationId(), productAddedToCustomerCart.toString());
+
+        // Publish Event (Queue goes here)
         productAddedToCustomerCartHandler.handle(productAddedToCustomerCart);
 
         return Response.accepted().build();
     }
 
     @RequestMapping(value = "/{cartId}", method = RequestMethod.DELETE)
-    Response remove(@PathVariable String cartId, @RequestBody RemoveProductFromCustomerCart removeProductFromCustomerCart) {
-        Optional<CustomerCart> thing = customerCartRepository.getCustomerCart(UUID.fromString(cartId));
-        if (!thing.isPresent()) {
+    Response remove(@PathVariable UUID cartId, @RequestBody RemoveProductFromCustomerCart removeProductFromCustomerCart) {
+        Optional<CustomerCart> customerCart = customerCartRepository.getCustomerCart(cartId);
+        if (!customerCart.isPresent()) {
             throw new HTTPException(404);
         }
 
-        // Store / Publish Event
+        // Map Command to Event
         ProductRemovedFromCustomerCart productRemovedFromCustomerCart = new ProductRemovedFromCustomerCart();
-        eventStoreRepository.storeEvent(UUID.randomUUID(), productRemovedFromCustomerCart.toString());
+        productRemovedFromCustomerCart.setCartId(cartId);
+        productRemovedFromCustomerCart.setCorrelationId(removeProductFromCustomerCart.getCorrelationId());
+        productRemovedFromCustomerCart.setProductId(removeProductFromCustomerCart.getProductId());
+        productRemovedFromCustomerCart.setUpdateDateTime(removeProductFromCustomerCart.getUpdateDateTime());
+
+        // Store Event
+        eventStoreRepository.storeCustomerCartEvent(cartId, productRemovedFromCustomerCart.getCorrelationId(), productRemovedFromCustomerCart.toString());
+
+        // Publish Event (Queue goes here)
         productRemovedFromCustomerCartHandler.handle(productRemovedFromCustomerCart);
 
         return Response.accepted().build();

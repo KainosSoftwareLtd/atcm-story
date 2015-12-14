@@ -19,10 +19,10 @@ public class CustomerCartReadController {
 
     @RequestMapping("/{cartId}")
     CustomerCart cart(@PathVariable String cartId) {
-        Optional<CustomerCart> thing = customerCartRepository.getCustomerCart(UUID.fromString(cartId));
-        if (!thing.isPresent()) {
+        Optional<CustomerCart> customerCart = customerCartRepository.getCustomerCart(UUID.fromString(cartId));
+        if (!customerCart.isPresent()) {
             throw new HTTPException(404);
         }
-        return thing.get();
+        return customerCart.get();
     }
 }

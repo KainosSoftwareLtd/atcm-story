@@ -1,5 +1,7 @@
 package com.kainos.atcm.write.event;
 
+import com.kainos.atcm.read.product.Product;
+import com.kainos.atcm.write.command.RemoveProductFromCustomerCart;
 import org.joda.time.DateTime;
 
 import java.util.UUID;
