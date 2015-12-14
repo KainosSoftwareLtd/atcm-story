@@ -1,10 +1,8 @@
-package com.kainos.atcm.write.command;
-
-import org.joda.time.DateTime;
+package com.kainos.atcm.command;
 
 import java.util.UUID;
 
-public class AddProductToCustomerCart {
+public class RemoveProductFromCustomerCart {
     UUID productId;
     UUID correlationId;
     String updateDateTimeUTC;

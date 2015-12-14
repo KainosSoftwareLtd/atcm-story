@@ -1,8 +1,8 @@
-package com.kainos.atcm.write.command;
+package com.kainos.atcm.command;
 
 import java.util.UUID;
 
-public class RemoveProductFromCustomerCart {
+public class AddProductToCustomerCart {
     UUID productId;
     UUID correlationId;
     String updateDateTimeUTC;

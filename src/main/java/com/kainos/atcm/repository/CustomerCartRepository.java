@@ -6,10 +6,7 @@ import com.kainos.atcm.domain.cart.CustomerCart;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Component
 public class CustomerCartRepository {
@@ -21,6 +18,10 @@ public class CustomerCartRepository {
         testCart.setCustomerCartId(UUID.fromString("e78bb203-26c4-40f5-856a-c65e4598a1cd"));
         testCart.setUpdatedAt(DateTime.now());
         dataStore.put(testCart.getCustomerCartId(), testCart);
+    }
+
+    public Collection<CustomerCart> getAllCarts(){
+        return dataStore.values();
     }
 
     public Optional<CustomerCart> getLatestCustomerCart(UUID customerCardId) {

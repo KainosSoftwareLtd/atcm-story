@@ -2,12 +2,13 @@ package com.kainos.atcm.domain.cart;
 
 import org.joda.time.DateTime;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class CustomerCart {
     private UUID customerCartId;
-    private List<CartProduct> products;
+    private List<CartProduct> products = new ArrayList<CartProduct>();
     private DateTime updatedAt;
     private UUID correlationId;
 

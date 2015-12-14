@@ -1,9 +1,9 @@
-package com.kainos.atcm.write.handler;
+package com.kainos.atcm.handler;
 
 import com.kainos.atcm.domain.cart.CartProduct;
 import com.kainos.atcm.domain.cart.CustomerCart;
+import com.kainos.atcm.event.ProductRemovedFromCustomerCart;
 import com.kainos.atcm.repository.CustomerCartRepository;
-import com.kainos.atcm.write.event.ProductRemovedFromCustomerCart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,8 +11,12 @@ import java.util.Optional;
 
 @Component
 public class ProductRemovedFromCustomerCartHandler {
+    private CustomerCartRepository customerCartRepository;
+
     @Autowired
-    CustomerCartRepository customerCartRepository;
+    public ProductRemovedFromCustomerCartHandler(CustomerCartRepository customerCartRepository) {
+        this.customerCartRepository = customerCartRepository;
+    }
 
     public void handle(ProductRemovedFromCustomerCart productRemovedFromCustomerCart) {
         Optional<CustomerCart> cart = customerCartRepository.getLatestCustomerCart(productRemovedFromCustomerCart.getCartId());
@@ -34,15 +38,16 @@ public class ProductRemovedFromCustomerCartHandler {
 
 
         // Find it
-        Optional<CartProduct> cartProduct = customerCart.getProducts().stream().filter(p -> p.getId() == productRemovedFromCustomerCart.getProductId()).findFirst();
+        Optional<CartProduct> cartProduct = newCustomerCart.getProducts().stream().filter(p -> p.getProductId() == productRemovedFromCustomerCart.getProductId()).findFirst();
         CartProduct productToRemove;
         if (cartProduct.isPresent()) {
             productToRemove = cartProduct.get();
             // Reduce quantity by one
-            productToRemove.setQuantity(productToRemove.getQuantity() - 1);
+            int newQuantity = productToRemove.getQuantity() - 1;
+            productToRemove.setQuantity(newQuantity);
 
             // Remove from the list
-            newCustomerCart.getProducts().removeIf(p -> p.getId() == productRemovedFromCustomerCart.getProductId());
+            newCustomerCart.getProducts().removeIf(p -> p.getProductId().equals(productRemovedFromCustomerCart.getProductId()));
             // If we have more than one left we add to our list
             if (productToRemove.getQuantity() > 0) {
                 newCustomerCart.getProducts().add(productToRemove);

@@ -3,11 +3,11 @@ package com.kainos.atcm.domain.cart;
 import java.util.UUID;
 
 public class CartProduct {
-    private UUID id;
+    private UUID productId;
     private String name;
     private String description;
     private String imageUrl;
-    private Integer quantity;
+    private Integer quantity = 0;
 
     public Float getCost() {
         return cost;
@@ -49,12 +49,12 @@ public class CartProduct {
         this.name = name;
     }
 
-    public UUID getId() {
-        return id;
+    public UUID getProductId() {
+        return productId;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public void setProductId(UUID productId) {
+        this.productId = productId;
     }
 
     private Float cost;

@@ -1,10 +1,10 @@
-package com.kainos.atcm.write.event;
+package com.kainos.atcm.event;
 
 import org.joda.time.DateTime;
 
 import java.util.UUID;
 
-public class ProductAddedToCustomerCart {
+public class ProductRemovedFromCustomerCart {
     private UUID cartId;
     private UUID productId;
     private UUID correlationId;

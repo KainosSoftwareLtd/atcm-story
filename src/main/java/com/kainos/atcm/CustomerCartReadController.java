@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.xml.ws.http.HTTPException;
+import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,5 +25,10 @@ public class CustomerCartReadController {
             throw new HTTPException(404);
         }
         return customerCart.get();
+    }
+
+    @RequestMapping()
+    Collection<CustomerCart> cart() {
+        return customerCartRepository.getAllCarts();
     }
 }
