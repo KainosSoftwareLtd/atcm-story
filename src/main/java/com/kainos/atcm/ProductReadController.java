@@ -1,6 +1,6 @@
 package com.kainos.atcm;
 
-import com.kainos.atcm.read.product.Product;
+import com.kainos.atcm.domain.product.Product;
 import com.kainos.atcm.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;

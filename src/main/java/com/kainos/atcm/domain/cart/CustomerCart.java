@@ -1,4 +1,4 @@
-package com.kainos.atcm.read.cart;
+package com.kainos.atcm.domain.cart;
 
 import org.joda.time.DateTime;
 

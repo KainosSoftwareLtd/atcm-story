@@ -1,6 +1,6 @@
 package com.kainos.atcm;
 
-import com.kainos.atcm.read.cart.CustomerCart;
+import com.kainos.atcm.domain.cart.CustomerCart;
 import com.kainos.atcm.repository.CustomerCartRepository;
 import com.kainos.atcm.repository.EventStoreRepository;
 import com.kainos.atcm.write.command.AddProductToCustomerCart;
@@ -9,6 +9,7 @@ import com.kainos.atcm.write.event.ProductAddedToCustomerCart;
 import com.kainos.atcm.write.event.ProductRemovedFromCustomerCart;
 import com.kainos.atcm.write.handler.ProductAddedToCustomerCartHandler;
 import com.kainos.atcm.write.handler.ProductRemovedFromCustomerCartHandler;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +35,7 @@ public class CustomerCartWriteController {
 
     @RequestMapping(value = "/{cartId}", method = RequestMethod.POST)
     Response add(@PathVariable UUID cartId, @RequestBody AddProductToCustomerCart addProductToCustomerCart) {
-        Optional<CustomerCart> customerCart = customerCartRepository.getCustomerCart(cartId);
+        Optional<CustomerCart> customerCart = customerCartRepository.getLatestCustomerCart(cartId);
         if (!customerCart.isPresent()) {
             throw new HTTPException(404);
         }
@@ -44,7 +45,9 @@ public class CustomerCartWriteController {
         productAddedToCustomerCart.setCartId(cartId);
         productAddedToCustomerCart.setCorrelationId(addProductToCustomerCart.getCorrelationId());
         productAddedToCustomerCart.setProductId(addProductToCustomerCart.getProductId());
-        productAddedToCustomerCart.setUpdateDateTime(addProductToCustomerCart.getUpdateDateTime());
+
+        // Date Time Antics
+        productAddedToCustomerCart.setUpdateDateTime(DateTime.parse(addProductToCustomerCart.getUpdateDateTimeUTC()));
 
         // Store Event
         eventStoreRepository.storeCustomerCartEvent(cartId, productAddedToCustomerCart.getCorrelationId(), productAddedToCustomerCart.toString());
@@ -57,7 +60,7 @@ public class CustomerCartWriteController {
 
     @RequestMapping(value = "/{cartId}", method = RequestMethod.DELETE)
     Response remove(@PathVariable UUID cartId, @RequestBody RemoveProductFromCustomerCart removeProductFromCustomerCart) {
-        Optional<CustomerCart> customerCart = customerCartRepository.getCustomerCart(cartId);
+        Optional<CustomerCart> customerCart = customerCartRepository.getLatestCustomerCart(cartId);
         if (!customerCart.isPresent()) {
             throw new HTTPException(404);
         }
@@ -67,7 +70,9 @@ public class CustomerCartWriteController {
         productRemovedFromCustomerCart.setCartId(cartId);
         productRemovedFromCustomerCart.setCorrelationId(removeProductFromCustomerCart.getCorrelationId());
         productRemovedFromCustomerCart.setProductId(removeProductFromCustomerCart.getProductId());
-        productRemovedFromCustomerCart.setUpdateDateTime(removeProductFromCustomerCart.getUpdateDateTime());
+
+        // Date Time Antics
+        productRemovedFromCustomerCart.setUpdateDateTime(DateTime.parse(removeProductFromCustomerCart.getUpdateDateTimeUTC()));
 
         // Store Event
         eventStoreRepository.storeCustomerCartEvent(cartId, productRemovedFromCustomerCart.getCorrelationId(), productRemovedFromCustomerCart.toString());

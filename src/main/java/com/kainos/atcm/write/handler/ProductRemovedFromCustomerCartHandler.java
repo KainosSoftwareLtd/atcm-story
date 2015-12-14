@@ -1,6 +1,7 @@
 package com.kainos.atcm.write.handler;
 
-import com.kainos.atcm.read.cart.CustomerCart;
+import com.kainos.atcm.domain.cart.CartProduct;
+import com.kainos.atcm.domain.cart.CustomerCart;
 import com.kainos.atcm.repository.CustomerCartRepository;
 import com.kainos.atcm.write.event.ProductRemovedFromCustomerCart;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +15,41 @@ public class ProductRemovedFromCustomerCartHandler {
     CustomerCartRepository customerCartRepository;
 
     public void handle(ProductRemovedFromCustomerCart productRemovedFromCustomerCart) {
-        Optional<CustomerCart> cart = customerCartRepository.getCustomerCart(productRemovedFromCustomerCart.getCartId());
+        Optional<CustomerCart> cart = customerCartRepository.getLatestCustomerCart(productRemovedFromCustomerCart.getCartId());
 
-        // This is broke, Exception time.
+        // Create cart if it doesn't exist
+        if (!cart.isPresent()) {
+            throw new IllegalStateException("This cart is not here, this is sad times");
+        }
 
-        // No Product? Uh oh. Well no negative product count so...i guess ok?
-        //
-        // Decrement product if it is here...if zero, remove it all together
-        //
+        CustomerCart customerCart = cart.get();
+
+        // Sort out the removal of a product
+        // Clone Last good state of the cart to prep for removal
+        CustomerCart newCustomerCart = new CustomerCart();
+        newCustomerCart.setCorrelationId(productRemovedFromCustomerCart.getCorrelationId());
+        newCustomerCart.setCustomerCartId(productRemovedFromCustomerCart.getCartId());
+        newCustomerCart.setUpdatedAt(productRemovedFromCustomerCart.getUpdateDateTime());
+        newCustomerCart.setProducts(customerCart.getProducts());
+
+
+        // Find it
+        Optional<CartProduct> cartProduct = customerCart.getProducts().stream().filter(p -> p.getId() == productRemovedFromCustomerCart.getProductId()).findFirst();
+        CartProduct productToRemove;
+        if (cartProduct.isPresent()) {
+            productToRemove = cartProduct.get();
+            // Reduce quantity by one
+            productToRemove.setQuantity(productToRemove.getQuantity() - 1);
+
+            // Remove from the list
+            newCustomerCart.getProducts().removeIf(p -> p.getId() == productRemovedFromCustomerCart.getProductId());
+            // If we have more than one left we add to our list
+            if (productToRemove.getQuantity() > 0) {
+                newCustomerCart.getProducts().add(productToRemove);
+            }
+        }
+
         // Store
+        customerCartRepository.storeCustomerCart(newCustomerCart);
     }
 }

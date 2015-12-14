@@ -1,6 +1,6 @@
 package com.kainos.atcm.repository;
 
-import com.kainos.atcm.read.product.Product;
+import com.kainos.atcm.domain.product.Product;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;

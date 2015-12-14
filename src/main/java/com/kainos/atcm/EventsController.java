@@ -16,8 +16,18 @@ public class EventsController {
     @Autowired
     EventStoreRepository eventStoreRepository;
 
-    @RequestMapping("/customer-cart}")
+    @RequestMapping("/customer-cart")
     Collection<Map.Entry<UUID, String>> customerCartEvents() {
         return eventStoreRepository.getCustomerCartEvents();
+    }
+
+    @RequestMapping("/products")
+    Collection<Map.Entry<UUID, String>> productEvents() {
+        return eventStoreRepository.getProductEvents();
+    }
+
+    @RequestMapping("/customer")
+    Collection<Map.Entry<UUID, String>> customerEvents() {
+        return eventStoreRepository.getCustomerEvents();
     }
 }

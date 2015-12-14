@@ -7,14 +7,14 @@ import java.util.UUID;
 public class AddProductToCustomerCart {
     UUID productId;
     UUID correlationId;
-    DateTime updateDateTime;
+    String updateDateTimeUTC;
 
-    public DateTime getUpdateDateTime() {
-        return updateDateTime;
+    public String getUpdateDateTimeUTC() {
+        return updateDateTimeUTC;
     }
 
-    public void setUpdateDateTime(DateTime updateDateTime) {
-        this.updateDateTime = updateDateTime;
+    public void setUpdateDateTimeUTC(String updateDateTimeUTC) {
+        this.updateDateTimeUTC = updateDateTimeUTC;
     }
 
     public UUID getCorrelationId() {

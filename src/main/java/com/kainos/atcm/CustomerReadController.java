@@ -1,6 +1,6 @@
 package com.kainos.atcm;
 
-import com.kainos.atcm.read.customer.Customer;
+import com.kainos.atcm.domain.customer.Customer;
 import com.kainos.atcm.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,10 +19,10 @@ public class CustomerReadController {
 
     @RequestMapping("/{customerId}")
     Customer cart(@PathVariable UUID customerId) {
-        Optional<Customer> thing = customerRepository.getCustomer(customerId);
-        if (!thing.isPresent()) {
+        Optional<Customer> customer = customerRepository.getCustomer(customerId);
+        if (!customer.isPresent()) {
             throw new HTTPException(404);
         }
-        return thing.get();
+        return customer.get();
     }
 }

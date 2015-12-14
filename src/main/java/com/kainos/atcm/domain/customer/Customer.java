@@ -1,4 +1,4 @@
-package com.kainos.atcm.read.customer;
+package com.kainos.atcm.domain.customer;
 
 import java.util.Currency;
 import java.util.Locale;

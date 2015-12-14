@@ -1,6 +1,6 @@
 package com.kainos.atcm.repository;
 
-import com.kainos.atcm.read.customer.Customer;
+import com.kainos.atcm.domain.customer.Customer;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;

@@ -38,6 +38,10 @@ public class EventStoreRepository {
         productEventStore.put(productId,eventRepresentation);
     }
 
+    public Collection<Map.Entry<UUID, String>> getProductEvents(){
+        return this.productEventStore.entries();
+    }
+
     public void storeCustomerEvent(UUID customerId, UUID correlationId, String eventRepresentation) {
         // Check for event
         if (customerEventStore.values().stream().filter(e->e.contains(correlationId.toString())).findAny().isPresent()){
@@ -46,5 +50,9 @@ public class EventStoreRepository {
 
         // Put
         customerEventStore.put(customerId,eventRepresentation);
+    }
+
+    public Collection<Map.Entry<UUID, String>> getCustomerEvents(){
+        return this.customerEventStore.entries();
     }
 }

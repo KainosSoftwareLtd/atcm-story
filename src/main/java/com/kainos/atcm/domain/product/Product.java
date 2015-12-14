@@ -1,4 +1,4 @@
-package com.kainos.atcm.read.product;
+package com.kainos.atcm.domain.product;
 
 import java.util.List;
 import java.util.UUID;
