@@ -34,11 +34,6 @@ public class CustomerCartWriteController {
 
     @RequestMapping(value = "/{cartId}", method = RequestMethod.POST)
     Response add(@PathVariable UUID cartId, @RequestBody AddProductToCustomerCart addProductToCustomerCart) {
-        CustomerCart customerCart = customerCartRepository.getCustomerCart(cartId);
-        if (customerCart == null) {
-            throw new HTTPException(404);
-        }
-
         // Map Command to Event
         ProductAddedToCustomerCart productAddedToCustomerCart = new ProductAddedToCustomerCart();
         productAddedToCustomerCart.setCartId(cartId);

@@ -34,12 +34,15 @@ public class ProductAddedToCustomerCartHandler {
         customerCart.getProducts().removeIf(p -> p.getProductId().equals(productAddedToCustomerCart.getProductId()));
         customerCart.getProducts().add(productToAdd);
 
+        customerCart.setCorrelationId(productAddedToCustomerCart.getCorrelationId());
+        customerCart.setUpdatedAt(productAddedToCustomerCart.getUpdateDateTime());
+
         // Store
         customerCartRepository.storeCustomerCart(customerCart);
     }
 
     private CartProduct getCartProduct(ProductAddedToCustomerCart productAddedToCustomerCart, CustomerCart customerCart) {
-        Optional<CartProduct> cartProduct = customerCart.getProducts().stream().filter(p -> p.getProductId() == productAddedToCustomerCart.getProductId()).findFirst();
+        Optional<CartProduct> cartProduct = customerCart.getProducts().stream().filter(p -> p.getProductId().equals(productAddedToCustomerCart.getProductId())).findFirst();
         CartProduct productToAdd;
         if (cartProduct.isPresent()) {
             productToAdd = cartProduct.get();

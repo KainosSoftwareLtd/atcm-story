@@ -19,15 +19,15 @@ public class ProductRemovedFromCustomerCartHandler {
     }
 
     public void handle(ProductRemovedFromCustomerCart productRemovedFromCustomerCart) {
-        CustomerCart cart = customerCartRepository.getCustomerCart(productRemovedFromCustomerCart.getCartId());
+        CustomerCart customerCart = customerCartRepository.getCustomerCart(productRemovedFromCustomerCart.getCartId());
 
         // Create cart if it doesn't exist
-        if (cart == null) {
+        if (customerCart == null) {
             throw new IllegalStateException("This cart is not here, this is sad times");
         }
 
         // Find it
-        Optional<CartProduct> cartProduct = cart.getProducts().stream().filter(p -> p.getProductId() == productRemovedFromCustomerCart.getProductId()).findFirst();
+        Optional<CartProduct> cartProduct = customerCart.getProducts().stream().filter(p -> p.getProductId().equals(productRemovedFromCustomerCart.getProductId())).findFirst();
         CartProduct productToRemove;
         if (cartProduct.isPresent()) {
             productToRemove = cartProduct.get();
@@ -36,14 +36,17 @@ public class ProductRemovedFromCustomerCartHandler {
             productToRemove.setQuantity(newQuantity);
 
             // Remove from the list
-            cart.getProducts().removeIf(p -> p.getProductId().equals(productRemovedFromCustomerCart.getProductId()));
+            customerCart.getProducts().removeIf(p -> p.getProductId().equals(productRemovedFromCustomerCart.getProductId()));
             // If we have more than one left we add to our list
             if (productToRemove.getQuantity() > 0) {
-                cart.getProducts().add(productToRemove);
+                customerCart.getProducts().add(productToRemove);
             }
         }
 
+        customerCart.setCorrelationId(productRemovedFromCustomerCart.getCorrelationId());
+        customerCart.setUpdatedAt(productRemovedFromCustomerCart.getUpdateDateTime());
+
         // Store
-        customerCartRepository.storeCustomerCart(cart);
+        customerCartRepository.storeCustomerCart(customerCart);
     }
 }
