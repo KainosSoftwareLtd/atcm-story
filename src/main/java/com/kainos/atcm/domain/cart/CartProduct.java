@@ -6,8 +6,8 @@ public class CartProduct {
     private UUID productId;
     private String name;
     private String description;
-    private String imageUrl;
     private Integer quantity = 0;
+    private Float cost;
 
     public Float getCost() {
         return cost;
@@ -23,14 +23,6 @@ public class CartProduct {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 
     public String getDescription() {
@@ -56,6 +48,4 @@ public class CartProduct {
     public void setProductId(UUID productId) {
         this.productId = productId;
     }
-
-    private Float cost;
 }

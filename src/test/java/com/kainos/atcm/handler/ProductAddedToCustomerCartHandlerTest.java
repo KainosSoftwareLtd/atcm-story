@@ -3,6 +3,7 @@ package com.kainos.atcm.handler;
 import com.kainos.atcm.domain.cart.CustomerCart;
 import com.kainos.atcm.event.ProductAddedToCustomerCart;
 import com.kainos.atcm.repository.CustomerCartRepository;
+import com.kainos.atcm.repository.ProductRepository;
 import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.Test;
@@ -22,8 +23,9 @@ public class ProductAddedToCustomerCartHandlerTest {
         UUID corellationId = UUID.randomUUID();
         DateTime dateUpdated = DateTime.now();
         CustomerCartRepository customerCartRepository = new CustomerCartRepository();
+        ProductRepository productRepository = new ProductRepository();
 
-        ProductAddedToCustomerCartHandler productAddedToCustomerCartHandler = new ProductAddedToCustomerCartHandler(customerCartRepository);
+        ProductAddedToCustomerCartHandler productAddedToCustomerCartHandler = new ProductAddedToCustomerCartHandler(customerCartRepository, productRepository);
 
         ProductAddedToCustomerCart productAddedToCustomerCart = new ProductAddedToCustomerCart();
         productAddedToCustomerCart.setCartId(cartId);
@@ -48,8 +50,9 @@ public class ProductAddedToCustomerCartHandlerTest {
         UUID productId = UUID.randomUUID();
         UUID product2Id = UUID.randomUUID();
         CustomerCartRepository customerCartRepository = new CustomerCartRepository();
+        ProductRepository productRepository = new ProductRepository();
 
-        ProductAddedToCustomerCartHandler productAddedToCustomerCartHandler = new ProductAddedToCustomerCartHandler(customerCartRepository);
+        ProductAddedToCustomerCartHandler productAddedToCustomerCartHandler = new ProductAddedToCustomerCartHandler(customerCartRepository, productRepository);
 
         ProductAddedToCustomerCart productAddedToCustomerCart = new ProductAddedToCustomerCart();
         productAddedToCustomerCart.setCartId(cartId);
@@ -84,8 +87,9 @@ public class ProductAddedToCustomerCartHandlerTest {
         UUID cartId = UUID.randomUUID();
         UUID productId = UUID.randomUUID();
         CustomerCartRepository customerCartRepository = new CustomerCartRepository();
+        ProductRepository productRepository = new ProductRepository();
 
-        ProductAddedToCustomerCartHandler productAddedToCustomerCartHandler = new ProductAddedToCustomerCartHandler(customerCartRepository);
+        ProductAddedToCustomerCartHandler productAddedToCustomerCartHandler = new ProductAddedToCustomerCartHandler(customerCartRepository, productRepository);
 
         ProductAddedToCustomerCart productAddedToCustomerCart = new ProductAddedToCustomerCart();
         productAddedToCustomerCart.setCartId(cartId);
@@ -118,8 +122,9 @@ public class ProductAddedToCustomerCartHandlerTest {
         UUID corellationId = UUID.randomUUID();
         DateTime dateUpdated = DateTime.now();
         CustomerCartRepository customerCartRepository = new CustomerCartRepository();
+        ProductRepository productRepository = new ProductRepository();
 
-        ProductAddedToCustomerCartHandler productAddedToCustomerCartHandler = new ProductAddedToCustomerCartHandler(customerCartRepository);
+        ProductAddedToCustomerCartHandler productAddedToCustomerCartHandler = new ProductAddedToCustomerCartHandler(customerCartRepository, productRepository);
 
         ProductAddedToCustomerCart productAddedToCustomerCart = new ProductAddedToCustomerCart();
         productAddedToCustomerCart.setCartId(cartId);

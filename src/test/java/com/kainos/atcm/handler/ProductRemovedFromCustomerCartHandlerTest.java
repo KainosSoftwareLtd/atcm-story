@@ -4,6 +4,7 @@ import com.kainos.atcm.domain.cart.CustomerCart;
 import com.kainos.atcm.event.ProductAddedToCustomerCart;
 import com.kainos.atcm.event.ProductRemovedFromCustomerCart;
 import com.kainos.atcm.repository.CustomerCartRepository;
+import com.kainos.atcm.repository.ProductRepository;
 import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.Test;
@@ -16,7 +17,7 @@ public class ProductRemovedFromCustomerCartHandlerTest {
         UUID correlationId = UUID.randomUUID();
         DateTime dateUpdated = DateTime.now();
 
-        ProductAddedToCustomerCartHandler productAddedToCustomerCartHandler = new ProductAddedToCustomerCartHandler(customerCartRepository);
+        ProductAddedToCustomerCartHandler productAddedToCustomerCartHandler = new ProductAddedToCustomerCartHandler(customerCartRepository, new ProductRepository());
 
         ProductAddedToCustomerCart productAddedToCustomerCart = new ProductAddedToCustomerCart();
         productAddedToCustomerCart.setCartId(cartId);

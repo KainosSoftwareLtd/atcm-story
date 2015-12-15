@@ -34,19 +34,26 @@ public class CustomerCartWriteController {
 
     @RequestMapping(value = "/{cartId}", method = RequestMethod.POST)
     Response add(@PathVariable UUID cartId, @RequestBody AddProductToCustomerCart addProductToCustomerCart) {
+        // Validation could go here
+        //
+
         // Map Command to Event
+        //
         ProductAddedToCustomerCart productAddedToCustomerCart = new ProductAddedToCustomerCart();
         productAddedToCustomerCart.setCartId(cartId);
         productAddedToCustomerCart.setCorrelationId(addProductToCustomerCart.getCorrelationId());
         productAddedToCustomerCart.setProductId(addProductToCustomerCart.getProductId());
 
         // Date Time Antics
+        //
         productAddedToCustomerCart.setUpdateDateTime(DateTime.parse(addProductToCustomerCart.getUpdateDateTimeUTC()));
 
         // Store Event
+        //
         eventStoreRepository.storeCustomerCartEvent(cartId, productAddedToCustomerCart.getCorrelationId(), productAddedToCustomerCart.toString());
 
         // Publish Event (Queue goes here)
+        //
         productAddedToCustomerCartHandler.handle(productAddedToCustomerCart);
 
         return Response.accepted().build();

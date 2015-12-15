@@ -7,7 +7,6 @@ public class Product {
     private UUID id;
     private String name;
     private String description;
-    private String imageUrl;
     private Float cost;
     private String category;
     private List<String> tags;
@@ -34,14 +33,6 @@ public class Product {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 
     public Float getCost() {
