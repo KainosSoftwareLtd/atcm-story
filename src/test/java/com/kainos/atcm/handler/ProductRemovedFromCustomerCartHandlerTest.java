@@ -118,4 +118,14 @@ public class ProductRemovedFromCustomerCartHandlerTest {
         Assert.assertTrue("Cart Contains Correct Product", customerCart.getProducts().get(0).getProductId() == productId);
         Assert.assertTrue("Cart Contains Correct Product Count", customerCart.getProducts().get(0).getQuantity().equals(1));
     }
+
+    @Test
+    public void RemoveOneProductWhenCartIsEmpty() throws Exception {
+        //TODO: implement
+    }
+
+    @Test
+    public void RemoveAndAddTheSameProduct() throws Exception {
+        //TODO: implement
+    }
 }
