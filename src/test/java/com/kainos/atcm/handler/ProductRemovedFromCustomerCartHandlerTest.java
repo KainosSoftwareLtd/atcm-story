@@ -5,6 +5,7 @@ import com.kainos.atcm.event.ProductAddedToCustomerCart;
 import com.kainos.atcm.event.ProductRemovedFromCustomerCart;
 import com.kainos.atcm.repository.CustomerCartRepository;
 import com.kainos.atcm.repository.ProductRepository;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.Test;
@@ -117,6 +118,18 @@ public class ProductRemovedFromCustomerCartHandlerTest {
         Assert.assertTrue("Cart Contains One Product", customerCart.getProducts().size() == 1);
         Assert.assertTrue("Cart Contains Correct Product", customerCart.getProducts().get(0).getProductId() == productId);
         Assert.assertTrue("Cart Contains Correct Product Count", customerCart.getProducts().get(0).getQuantity().equals(1));
+    }
+
+    @Test
+    @Ignore
+    public void RemoveOneProductWhenCartIsEmpty() throws Exception {
+        //TODO: implement
+    }
+
+    @Test
+    @Ignore
+    public void RemoveAndAddTheSameProduct() throws Exception {
+        //TODO: implement
     }
 
     @Test
