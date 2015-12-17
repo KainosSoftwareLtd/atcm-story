@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/KainosSoftwareLtd/atcm-story.svg?branch=master)](https://travis-ci.org/KainosSoftwareLtd/atcm-story)
+
 ## Basic Instructions
 
 Install Wildfly (use brew)
